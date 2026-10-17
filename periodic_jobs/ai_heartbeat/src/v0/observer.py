@@ -5,10 +5,12 @@ Instructs OpenCode-Builder to autonomously scan, filter, and write to memory.
 """
 import os
 from datetime import datetime
+from pathlib import Path
 
 from opencode_client import OpenCodeClient
 
-KNOWLEDGE_BASE = "/path/to/your/workspace/periodic_jobs/ai_heartbeat/docs/KNOWLEDGE_BASE.md"
+WORKSPACE_ROOT = os.environ.get("WORKSPACE_ROOT") or str(Path(__file__).resolve().parents[4])
+KNOWLEDGE_BASE = f"{WORKSPACE_ROOT}/periodic_jobs/ai_heartbeat/docs/KNOWLEDGE_BASE.md"
 OBSERVATIONS_PATH = os.path.join(
     os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(KNOWLEDGE_BASE)))),
     "contexts", "memory", "OBSERVATIONS.md"
@@ -26,8 +28,8 @@ PROMPT_TEMPLATE = """
 【任务内容】：
 1. **获取 Context**：请阅读上述 SOP 以及其中引用的 L3 约束文件。
 2. **幂等性检查**：读取 OBSERVATIONS.md，若已有 `Date: {target_date}` 则跳过后续步骤。
-3. **扫描与过滤**：自主扫描根目录（/path/to/your/workspace）下的变动。
-4. **写入记忆**：将针对 {target_date} 的 🔴 🟡 🟢 观测结果直接写入或追加到 `/path/to/your/workspace/contexts/memory/OBSERVATIONS.md`。**鼓励使用命令行 append**（如 `echo "..." >> OBSERVATIONS.md` 或 `tee -a`），避免对大文件做全文编辑。
+3. **扫描与过滤**：自主扫描根目录（{workspace_root}）下的变动。
+4. **写入记忆**：将针对 {target_date} 的 🔴 🟡 🟢 观测结果直接写入或追加到 `{workspace_root}/contexts/memory/OBSERVATIONS.md`。**鼓励使用命令行 append**（如 `echo "..." >> OBSERVATIONS.md` 或 `tee -a`），避免对大文件做全文编辑。
 5. **范围约束**：**仅执行 L1 Observer 任务**。不要执行 SOP 中提到的 L2 Reflector 任务（即不要修改 `rules/` 下的任何文件，不要进行规则晋升或垃圾回收）。
 6. **格式规范**：
    - 日期 Header 必须严格使用 `Date: YYYY-MM-DD` 格式（Date 首字母大写，冒号后空格，日期为 ISO 格式）。
@@ -40,15 +42,16 @@ def main():
     parser = argparse.ArgumentParser(description='L1 Observer Agent')
     parser.add_argument('date', nargs='?', default=datetime.now().strftime("%Y-%m-%d"),
                         help='Target date (YYYY-MM-DD)')
-    parser.add_argument('--model', default='<your-model-id>',
-                        choices=['<your-model-id>'],
-                        help='Model ID to use')
+    parser.add_argument('--model', default=os.environ.get("OPENCODE_MODEL"),
+                        help='Model ID to use (default: $OPENCODE_MODEL)')
     parser.add_argument('--no-delete', action='store_true',
                         help='Keep session after completion (default: delete)')
     args = parser.parse_args()
 
     target_date = args.date
     model_id = args.model
+    if not model_id:
+        parser.error("Model ID required: set OPENCODE_MODEL in .env or pass --model")
     delete_after = not args.no_delete
 
     # Idempotency: skip if entry for target_date already exists
@@ -66,7 +69,7 @@ def main():
     if not session_id:
         return
 
-    prompt = PROMPT_TEMPLATE.format(kb_path=KNOWLEDGE_BASE, target_date=target_date)
+    prompt = PROMPT_TEMPLATE.format(kb_path=KNOWLEDGE_BASE, target_date=target_date, workspace_root=WORKSPACE_ROOT)
     client.send_message(session_id, prompt, model_id=model_id)
     # If send_message timed out, agent may still be running; poll until done
     print("Waiting for session to complete (sync mode)...")

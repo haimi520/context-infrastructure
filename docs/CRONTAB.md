@@ -2,6 +2,11 @@
 
 本文档描述 context infrastructure 系统所需的定时任务。
 
+> **macOS 用户注意**：cron 在 macOS 上已被 Apple 归为 legacy，睡眠会跳过任务。
+> 本机（Mac mini 常开）使用 launchd 方案，定义文件见
+> [`periodic_jobs/launchd/`](../periodic_jobs/launchd/)，说明见其 README。
+> 下面的 crontab 内容仍可作为 Linux 服务器场景的参考。
+
 ---
 
 ## 时间线总览

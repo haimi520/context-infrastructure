@@ -3,11 +3,14 @@
 L2 Reflector Agent (Trigger Script)
 Instructs OpenCode-Builder to perform memory garbage collection directly on the file.
 """
+import os
 from datetime import datetime
+from pathlib import Path
 
 from opencode_client import OpenCodeClient
 
-KNOWLEDGE_BASE = "/path/to/your/workspace/periodic_jobs/ai_heartbeat/docs/KNOWLEDGE_BASE.md"
+WORKSPACE_ROOT = os.environ.get("WORKSPACE_ROOT") or str(Path(__file__).resolve().parents[4])
+KNOWLEDGE_BASE = f"{WORKSPACE_ROOT}/periodic_jobs/ai_heartbeat/docs/KNOWLEDGE_BASE.md"
 
 PROMPT_TEMPLATE = """
 执行记忆系统的"反思与晋升"任务。
@@ -31,12 +34,13 @@ SOP: {kb_path}
 def main():
     import argparse
     parser = argparse.ArgumentParser(description='L2 Reflector Agent')
-    parser.add_argument('--model', default='<your-model-id>',
-                        choices=['<your-model-id>'],
-                        help='Model ID to use')
+    parser.add_argument('--model', default=os.environ.get("OPENCODE_MODEL"),
+                        help='Model ID to use (default: $OPENCODE_MODEL)')
     args = parser.parse_args()
 
     model_id = args.model
+    if not model_id:
+        parser.error("Model ID required: set OPENCODE_MODEL in .env or pass --model")
     target_date = datetime.now().strftime("%Y-%m-%d")
 
     print(f"Triggering Fully Agentic Reflector using model: {model_id}...")

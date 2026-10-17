@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.contextinfra.heartbeat-observer</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/mingyu/Documents/Deepseek/context-infrastructure/periodic_jobs/launchd/run_with_env.sh</string>
+        <string>periodic_jobs/ai_heartbeat/src/v0/observer.py</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>8</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+    <key>ProcessType</key>
+    <string>Background</string>
+    <key>StandardOutPath</key>
+    <string>/Users/mingyu/Documents/Deepseek/context-infrastructure/logs/observer.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/mingyu/Documents/Deepseek/context-infrastructure/logs/observer.log</string>
+</dict>
+</plist>
