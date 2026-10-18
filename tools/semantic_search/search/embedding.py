@@ -5,7 +5,9 @@ from openai import OpenAI
 
 class EmbeddingClient:
     def __init__(self, base_url: str = "http://localhost:1234/v1", model: str = "text-embedding-qwen3-embedding-8b"):
-        self.client = OpenAI(base_url=base_url, api_key="lm-studio")
+        import os
+        api_key = os.getenv("SEMANTIC_EMBEDDING_API_KEY", "lm-studio")
+        self.client = OpenAI(base_url=base_url, api_key=api_key)
         self.model = model
 
     def embed(self, text: str) -> List[float]:

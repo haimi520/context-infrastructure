@@ -1,5 +1,6 @@
 import argparse
 import json
+import os
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -72,8 +73,8 @@ def main():
     parser.add_argument("--query", required=True, help="Natural language query")
     parser.add_argument("--top-k", type=int, default=5, help="Number of results to return")
     parser.add_argument("--workers", type=int, default=4, help="Number of parallel workers for embedding")
-    parser.add_argument("--endpoint", default="http://localhost:1234/v1", help="Embedding API endpoint")
-    parser.add_argument("--model", default="text-embedding-qwen3-embedding-8b", help="Embedding model name")
+    parser.add_argument("--endpoint", default=os.environ.get("SEMANTIC_EMBEDDING_ENDPOINT", "http://localhost:1234/v1"), help="Embedding API endpoint (default: $SEMANTIC_EMBEDDING_ENDPOINT)")
+    parser.add_argument("--model", default=os.environ.get("SEMANTIC_EMBEDDING_MODEL", "text-embedding-qwen3-embedding-8b"), help="Embedding model name (default: $SEMANTIC_EMBEDDING_MODEL)")
 
     args = parser.parse_args()
 

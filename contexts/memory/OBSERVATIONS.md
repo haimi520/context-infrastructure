@@ -49,3 +49,9 @@ Date: 2026-10-18
 🔴 High: [角色隔离] 仅执行 L1 Observer 任务，读取 periodic_jobs/ai_heartbeat/docs/KNOWLEDGE_BASE.md SOP 与 L3 约束（rules/SOUL.md、rules/USER.md、rules/WORKSPACE.md、rules/COMMUNICATION.md、rules/skills/INDEX.md），未修改 rules/ 下任何文件，未执行 L2 Reflector 规则晋升或垃圾回收，遵循 Observer/Reflector 独立阶段原则。
 🟡 Medium: [活跃项目状态] 根目录扫描完成：periodic_jobs/ai_heartbeat/docs/PRD.md 为心跳项目新增需求文档；rules/axioms/ 下 43 条公理与 rules/skills/ 下 40 余技能文件构成 L3 约束与可复用能力体系；tools/ 下 opencode_job.py、send_email_to_myself.py、semantic_search/ 等工具脚本已就绪。
 🟢 Low: [任务流水] 执行 2026-10-18 L1 Observer 任务：扫描 contexts/、periodic_jobs/、rules/、tools/、adhoc_jobs/ 变动；未发现 contexts/blog/content/ 或 contexts/life_record/ 目录，故无博客/生活记录条目过滤；以 append 方式写入 contexts/memory/OBSERVATIONS.md。
+
+Date: 2026-10-18
+
+🔴 High: [硬性约束/底线] launchd 心跳作业的 plist 与日志路径已由 `/Users/mingyu/Documents/Deepseek/context-infrastructure/` 迁至仓库根目录 `/Users/mingyu/context-infra/repo/`，periodic_jobs/launchd/com.contextinfra.heartbeat-observer.plist 与 periodic_jobs/launchd/com.contextinfra.heartbeat-reflector.plist 中的脚本与 StandardOut/StandardErrorPath 已更正；periodic_jobs/launchd/com.contextinfra.opencode-server.plist 已删除，opencode 后台服务不再由独立 launchd plist 托管。
+🟡 Medium: [活跃项目状态/技术决策] periodic_jobs/launchd/run_with_env.sh 新增 ensure_opencode_service，在执行目标脚本前自动通过 `opencode service start/status` 解析 opencode v2 后台服务监听 URL，导出 OPENCODE_BASE_URL（/api 前缀）并从 ~/.config/opencode/service.json 读取 OPENCODE_PASSWORD，observer.py/reflector.py 可依赖后台服务可用；.gitignore 新增 `.worktrees/`，将 git worktree 隔离目录排除在版本控制之外。
+🟢 Low: [任务流水] 执行 2026-10-18 L1 Observer 任务，扫描根目录变动（git diff + 昨日后 mtime 文件）；contexts/ 下未发现 contexts/blog/content/ 与 contexts/life_record/，故无博客/生活记录条目过滤；logs/ 下 observer.log、reflector.log 等今日被触及，属运行时噪声，不计入记忆；本条目以 append 方式写入 contexts/memory/OBSERVATIONS.md，未修改 rules/ 下任何文件，未执行 L2 Reflector 任务。

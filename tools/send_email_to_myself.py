@@ -108,17 +108,21 @@ def md_to_html(md_content, title=None, css=None):
 def send_email(subject, body, to_addr=None, cc_addr=None, is_html=False):
     load_dotenv()
 
-    username = os.getenv("GMAIL_USERNAME")
-    password = os.getenv("GMAIL_APP_PASSWORD")
+    username = os.getenv("SMTP_USERNAME") or os.getenv("GMAIL_USERNAME")
+    password = os.getenv("SMTP_PASSWORD") or os.getenv("GMAIL_APP_PASSWORD")
+    smtp_host = os.getenv("SMTP_HOST", "smtp.gmail.com" if os.getenv("GMAIL_USERNAME") else "")
+    smtp_port = int(os.getenv("SMTP_PORT", "587"))
+    smtp_ssl = os.getenv("SMTP_SSL", "").lower() in ("1", "true", "yes")
+    sender = os.getenv("SMTP_FROM") or username
     if not to_addr:
-        to_addr = os.getenv("GMAIL_RECIPIENTS", "<your-email>")
+        to_addr = os.getenv("SMTP_TO") or os.getenv("GMAIL_RECIPIENTS", "<your-email>")
 
-    if not username or not password:
-        print("Error: GMAIL_USERNAME and GMAIL_APP_PASSWORD must be set in .env")
+    if not (username and password and smtp_host):
+        print("Error: SMTP_HOST, SMTP_USERNAME and SMTP_PASSWORD must be set in .env")
         return False
 
     msg = MIMEMultipart("alternative")
-    msg["From"] = username
+    msg["From"] = sender
     msg["To"] = to_addr
     if cc_addr:
         msg["Cc"] = cc_addr
@@ -130,13 +134,19 @@ def send_email(subject, body, to_addr=None, cc_addr=None, is_html=False):
         msg.attach(MIMEText(body, "plain", "utf-8"))
 
     try:
-        with smtplib.SMTP("smtp.gmail.com", 587) as server:
-            server.starttls()
-            server.login(username, password)
-            recipients = [to_addr]
-            if cc_addr:
-                recipients.append(cc_addr)
-            server.send_message(msg, username, recipients)
+        if smtp_ssl:
+            with smtplib.SMTP_SSL(smtp_host, smtp_port) as server:
+                server.login(username, password)
+                recipients = [a.strip() for a in to_addr.split(",")] + [cc_addr] if cc_addr \
+                    else [a.strip() for a in to_addr.split(",")]
+                server.send_message(msg, sender, [r for r in recipients if r])
+        else:
+            with smtplib.SMTP(smtp_host, smtp_port) as server:
+                server.starttls()
+                server.login(username, password)
+                recipients = [a.strip() for a in to_addr.split(",")] + [cc_addr] if cc_addr \
+                    else [a.strip() for a in to_addr.split(",")]
+                server.send_message(msg, sender, [r for r in recipients if r])
         return True
     except Exception as e:
         print(f"Error sending email: {e}")
