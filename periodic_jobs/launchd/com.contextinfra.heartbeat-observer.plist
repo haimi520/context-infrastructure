@@ -6,7 +6,7 @@
     <string>com.contextinfra.heartbeat-observer</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/Users/mingyu/Documents/Deepseek/context-infrastructure/periodic_jobs/launchd/run_with_env.sh</string>
+        <string>/Users/mingyu/context-infra/repo/periodic_jobs/launchd/run_with_env.sh</string>
         <string>periodic_jobs/ai_heartbeat/src/v0/observer.py</string>
     </array>
     <key>StartCalendarInterval</key>
@@ -19,8 +19,8 @@
     <key>ProcessType</key>
     <string>Background</string>
     <key>StandardOutPath</key>
-    <string>/Users/mingyu/Documents/Deepseek/context-infrastructure/logs/observer.log</string>
+    <string>/Users/mingyu/context-infra/repo/logs/observer.log</string>
     <key>StandardErrorPath</key>
-    <string>/Users/mingyu/Documents/Deepseek/context-infrastructure/logs/observer.log</string>
+    <string>/Users/mingyu/context-infra/repo/logs/observer.log</string>
 </dict>
 </plist>
