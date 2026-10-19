@@ -60,7 +60,7 @@
 - [深度调研工作流](./workflow_deep_research_survey.md) ✅ — 基于多 Agent 并行检索与交叉验证的深度信息采集流程（Phase 1-3）
 - [公开 Consensus Net Income 审计工作流](./workflow_public_consensus_net_income_audit.md) — 通过 MarketScreener 等公开金融站点核验一组股票的 FY/CY consensus net income。触发词："consensus net income"、"MarketScreener 审计"、"FY2026E 净利润共识"
 - [科研论文调研与写作工作流](./workflow_research_paper_survey_writing.md) — 把科研论文重构为面向技术从业者的深度解读文章。触发词："分析这篇论文"、"写论文解读"、"paper analysis"
-- [外部写作工作流](./workflow_external_writing.md) → 已迁移到 [grapeot/writing-skill](https://github.com/grapeot/writing-skill/blob/master/skills/workflow_external_writing.md) — 对外深度技术分析文章写作流程；包含双生成单审查、分离冷读验收与终端冷读一票放行
+- [外部写作工作流](./workflow_external_writing.md) → 已迁移到 [grapeot/writing-skill](https://github.com/grapeot/writing-skill/blob/master/skills/workflow_external_writing.md) — 对外深度技术分析文章写作流程；包含双生成单审查、分离冷读验收与终端冷读一票放行。**已装本地副本**：`~/context-infra/ecosystem/writing-skill`，CLI `external-prose-lint` 已入 workspace `.venv`
 - [External Prose Lint CLI](./external_prose_lint.md) → 已迁移到 [grapeot/writing-skill](https://github.com/grapeot/writing-skill/blob/master/skills/external_prose_lint.md) — 基于规则的确定性中文 prose 扫描工具；命令：`python -m writing_skill.external_prose_lint_cli <md>`
 - [内部写作工作流](./workflow_internal_writing.md) → 已迁移到 [grapeot/writing-skill](https://github.com/grapeot/writing-skill/blob/master/skills/workflow_internal_writing.md) — 内部文档写作；结论前置、概念依序出场、可验证性
 - [认知画像提取工作流](./workflow_cognitive_profile_extraction.md) — 从群聊、Slack、Discord、邮件及播客转录等非结构化对话中提炼可预测的认知公理；要求 Opus 模型亲自完成写作
@@ -69,7 +69,7 @@
 - [视频下载与语音识别工作流（Qwen ASR 优先）](./workflow_bilibili_whisper_transcription.md) — Bilibili/YouTube 音视频下载与语音识别处理流程
 - [延时执行技能](./delayed_execution.md) ⚙️ — `sleep + nohup` 低风险 fallback；durable 或 AI 延时任务见 ecosystem 的 Process Launcher + OpenCode Skill
 - [项目脚手架与重整](./project_scaffold.md) ✅ — 把散落文件升级为规范工程目录并初始化独立 Git 仓库
-- [AI Session Search & Archive](./ai_session_search_archive.md) — 在 OpenCode、Claude Code、Codex、Antigravity 与 Second Mind 的统一 Markdown 归档中按来源检索历史会话
+- [AI Session Search & Archive](./ai_session_search_archive.md) — 在 OpenCode、Claude Code、Codex、Antigravity 与 Second Mind 的统一 Markdown 归档中按来源检索历史会话。**每日 04:00 launchd 自动归档**（label `com.contextinfra.session-export`，产物 `contexts/ai_sessions/<source>/`，私有不入库）
 
 ### BestPractice（最佳实践）
 

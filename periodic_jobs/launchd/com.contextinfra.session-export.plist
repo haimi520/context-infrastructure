@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.contextinfra.session-export</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/mingyu/context-infra/repo/periodic_jobs/launchd/run_with_env.sh</string>
+        <string>/Users/mingyu/context-infra/ecosystem/ai_session_export/export_sessions.py</string>
+        <string>--source</string>
+        <string>opencode</string>
+        <string>--source</string>
+        <string>claude-code</string>
+        <string>--source</string>
+        <string>codex</string>
+        <string>--source</string>
+        <string>antigravity</string>
+        <string>--base-dir</string>
+        <string>contexts/ai_sessions</string>
+        <string>--state-file</string>
+        <string>contexts/ai_sessions/.export_state.json</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>/Users/mingyu/context-infra/repo</string>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>4</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+    <key>ProcessType</key>
+    <string>Background</string>
+    <key>StandardOutPath</key>
+    <string>/Users/mingyu/context-infra/repo/logs/session_export.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/mingyu/context-infra/repo/logs/session_export.log</string>
+</dict>
+</plist>

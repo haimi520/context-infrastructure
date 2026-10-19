@@ -8,3 +8,6 @@ __pycache__/
 .pytest_cache/
 .worktrees/
 .knowledge_cache/
+
+# AI 会话归档（私有数据，不入库）
+contexts/ai_sessions/

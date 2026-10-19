@@ -7,9 +7,9 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 LAUNCHD_DIR="$REPO_ROOT/periodic_jobs/launchd"
 LABELS=(
-    com.contextinfra.opencode-server
     com.contextinfra.heartbeat-observer
     com.contextinfra.heartbeat-reflector
+    com.contextinfra.session-export
 )
 GID="$(id -u)"
 
