@@ -69,7 +69,7 @@
 - [视频下载与语音识别工作流（Qwen ASR 优先）](./workflow_bilibili_whisper_transcription.md) — Bilibili/YouTube 音视频下载与语音识别处理流程
 - [延时执行技能](./delayed_execution.md) ⚙️ — `sleep + nohup` 低风险 fallback；durable 或 AI 延时任务见 ecosystem 的 Process Launcher + OpenCode Skill
 - [项目脚手架与重整](./project_scaffold.md) ✅ — 把散落文件升级为规范工程目录并初始化独立 Git 仓库
-- [AI Session Search & Archive](./ai_session_search_archive.md) — 在 OpenCode、Claude Code、Codex、Antigravity 与 Second Mind 的统一 Markdown 归档中按来源检索历史会话。**每日 04:00 launchd 自动归档**（label `com.contextinfra.session-export`，产物 `contexts/ai_sessions/<source>/`，私有不入库）
+- [AI Session Search & Archive](./ai_session_search_archive.md) — 在 OpenCode、Claude Code、Codex、DeepSeek Harness 与 Antigravity 的统一 Markdown 归档中按来源检索历史会话。**每日 04:00 launchd 自动归档**（label `com.contextinfra.session-export`，产物 `contexts/ai_sessions/<source>/`，私有不入库）
 
 ### BestPractice（最佳实践）
 
