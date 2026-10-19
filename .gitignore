@@ -11,3 +11,4 @@ __pycache__/
 
 # AI 会话归档（私有数据，不入库）
 contexts/ai_sessions/
+adhoc_jobs/share_site/site/
