@@ -1,1 +1,13 @@
-{"articles": []}
+{
+  "articles": [
+    {
+      "slug": "keychain-migration-test-20261019",
+      "title": "钥匙串迁移报告",
+      "date": "2026-10-19",
+      "description": "# 钥匙串迁移报告 本报告用于验证 share_report 的 GitHub Pages 发布管线。 ## 结论 敏感配置已全部迁移至 macOS 钥匙串，`.env` 明文清零，三条执行路径（launchd、直跑、手动）验证通过。 ## 明细 - SMTP / Silicon",
+      "author": "hill",
+      "indexed": false,
+      "is_temporary": false
+    }
+  ]
+}

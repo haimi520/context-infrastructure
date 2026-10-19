@@ -203,3 +203,20 @@ grep -c 'data:image' adhoc_jobs/yage_share/site/<slug>.html
 - **重要：使用 `--metadata title` 时，Markdown 文件的第一行不应该是 `# ` 标题**。pandoc 会从 metadata 自动生成一个 h1 元素，如果 Markdown 中还有 `# ` 标题，HTML 输出会出现两个 h1 元素。解决方案：删除 Markdown 中的 `# ` 标题行，让 pandoc 的 metadata title 单独提供 h1。
 - 本地项目目录 `adhoc_jobs/yage_share/` 是 manifest 和 site 的 source of truth
 - `site/` 下的 HTML 文件被 .gitignore 忽略，只有 manifest.json 和脚本被 git 追踪
+
+
+---
+
+## 本地适配（hill / GitHub Pages 路线，2026-10-19）
+
+原版流程依赖自有服务器 + rsync；本地已适配为 GitHub Pages 管线，**用 `tools/publish_report.sh` 一键替代第 1-5 步**（GA4/TTS 片段境内无意义，已省略）：
+
+```bash
+tools/publish_report.sh <input.md> <slug> [--title "标题"] [--indexed] [--push]
+```
+
+- 发布载体：`haimi520.github.io/share/`（PAGES_REPO_DIR 指向本地 clone `~/context-infra/ecosystem/share-pages`，配置在 `.env`）
+- HTML 自包含（CSS 内嵌，单文件），无需上传 CSS
+- manifest/index：`adhoc_jobs/share_site/{manifest.json,gen_index.py}`，`--indexed` 控制是否进索引页
+- 索引页：https://haimi520.github.io/share/index.html
+- 原 `adhoc_jobs/yage_share/` 私有仓流程不再使用

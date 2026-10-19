@@ -8,6 +8,15 @@
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+
+# 加载仓库 .env（PAGES_REPO_DIR 等配置）
+if [ -f "$REPO_ROOT/.env" ]; then
+    set -a
+    # shellcheck disable=SC1091
+    . "$REPO_ROOT/.env"
+    set +a
+fi
+
 SITE_DIR="$REPO_ROOT/adhoc_jobs/share_site/site"
 MANIFEST="$REPO_ROOT/adhoc_jobs/share_site/manifest.json"
 CSS_SRC="$REPO_ROOT/tools/share_report.css"
