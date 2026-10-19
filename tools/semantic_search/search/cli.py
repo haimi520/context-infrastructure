@@ -4,6 +4,9 @@ import os
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+
+from dotenv import load_dotenv
+from pathlib import Path
 from typing import List
 
 import numpy as np
@@ -67,6 +70,7 @@ def extract_features_parallel(
     return all_new_chunks
 
 def main():
+    load_dotenv(Path(__file__).resolve().parents[3] / ".env")
     parser = argparse.ArgumentParser(description="Semantic Search CLI for Knowledge Base")
     parser.add_argument("--cache-dir", default=".knowledge_cache", help="Directory to store cache files")
     parser.add_argument("--file-list", required=True, help="Path to a text file containing list of MD files to search")

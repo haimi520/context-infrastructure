@@ -45,16 +45,20 @@ def main():
     args = parser.parse_args()
 
     load_repo_env()
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from secret_helper import get_secret
+
     base = args.api_base.lower()
-    api_key = os.getenv("IMAGE_API_KEY")
+    api_key = get_secret("IMAGE_API_KEY")
     if not api_key and "opendoor" in base:
-        api_key = os.getenv("OPENDOOR_API_KEY")
+        api_key = get_secret("OPENDOOR_API_KEY")
     if not api_key and "wucur" in base:
-        api_key = os.getenv("WUCUR_API_KEY")
+        api_key = get_secret("WUCUR_API_KEY")
     if not api_key:
-        api_key = os.getenv("SEMANTIC_EMBEDDING_API_KEY")
+        api_key = get_secret("SEMANTIC_EMBEDDING_API_KEY")
     if not api_key:
-        print("Error: set IMAGE_API_KEY / OPENDOOR_API_KEY / WUCUR_API_KEY / SEMANTIC_EMBEDDING_API_KEY in .env")
+        print("Error: set IMAGE_API_KEY / OPENDOOR_API_KEY / WUCUR_API_KEY / SEMANTIC_EMBEDDING_API_KEY in .env or Keychain")
         return 1
 
     payload = {"model": args.model, "prompt": args.prompt}

@@ -14,6 +14,15 @@ if [ -f "$REPO_ROOT/.env" ]; then
     set +a
 fi
 
+# 敏感值钥匙串回填：.env 中留空(或文件不存在)时从 Keychain 取 CONTEXTINFRA_<NAME>
+for SECRET_NAME in SMTP_PASSWORD SEMANTIC_EMBEDDING_API_KEY OPENDOOR_API_KEY WUCUR_API_KEY; do
+    CURRENT_VALUE="${!SECRET_NAME:-}"
+    if [ -z "$CURRENT_VALUE" ]; then
+        KEYCHAIN_VALUE="$(security find-generic-password -a "${USER:-$(whoami)}" -s "CONTEXTINFRA_${SECRET_NAME}" -w 2>/dev/null || true)"
+        [ -n "$KEYCHAIN_VALUE" ] && export "$SECRET_NAME=$KEYCHAIN_VALUE"
+    fi
+done
+
 # opencode v2 自带后台服务（`opencode service`，由桌面端登录项托管，父进程 launchd）。
 # systemctl 风格：start 幂等，永远返回当前监听 URL；凭证在 ~/.config/opencode/service.json。
 ensure_opencode_service() {

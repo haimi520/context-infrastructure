@@ -108,14 +108,18 @@ def md_to_html(md_content, title=None, css=None):
 def send_email(subject, body, to_addr=None, cc_addr=None, is_html=False):
     load_dotenv()
 
-    username = os.getenv("SMTP_USERNAME") or os.getenv("GMAIL_USERNAME")
-    password = os.getenv("SMTP_PASSWORD") or os.getenv("GMAIL_APP_PASSWORD")
-    smtp_host = os.getenv("SMTP_HOST", "smtp.gmail.com" if os.getenv("GMAIL_USERNAME") else "")
-    smtp_port = int(os.getenv("SMTP_PORT", "587"))
-    smtp_ssl = os.getenv("SMTP_SSL", "").lower() in ("1", "true", "yes")
-    sender = os.getenv("SMTP_FROM") or username
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from secret_helper import get_secret
+
+    username = get_secret("SMTP_USERNAME") or os.getenv("GMAIL_USERNAME")
+    password = get_secret("SMTP_PASSWORD") or os.getenv("GMAIL_APP_PASSWORD")
+    smtp_host = get_secret("SMTP_HOST") or ("smtp.gmail.com" if os.getenv("GMAIL_USERNAME") else "")
+    smtp_port = int(get_secret("SMTP_PORT") or "587")
+    smtp_ssl = (get_secret("SMTP_SSL") or "").lower() in ("1", "true", "yes")
+    sender = get_secret("SMTP_FROM") or username
     if not to_addr:
-        to_addr = os.getenv("SMTP_TO") or os.getenv("GMAIL_RECIPIENTS", "<your-email>")
+        to_addr = get_secret("SMTP_TO") or os.getenv("GMAIL_RECIPIENTS", "<your-email>")
 
     if not (username and password and smtp_host):
         print("Error: SMTP_HOST, SMTP_USERNAME and SMTP_PASSWORD must be set in .env")

@@ -6,7 +6,13 @@ from openai import OpenAI
 class EmbeddingClient:
     def __init__(self, base_url: str = "http://localhost:1234/v1", model: str = "text-embedding-qwen3-embedding-8b"):
         import os
-        api_key = os.getenv("SEMANTIC_EMBEDDING_API_KEY", "lm-studio")
+        import sys
+        from pathlib import Path
+        tools_dir = str(Path(__file__).resolve().parents[2])
+        if tools_dir not in sys.path:
+            sys.path.insert(0, tools_dir)
+        from secret_helper import get_secret
+        api_key = get_secret("SEMANTIC_EMBEDDING_API_KEY") or os.getenv("SEMANTIC_EMBEDDING_API_KEY", "lm-studio")
         self.client = OpenAI(base_url=base_url, api_key=api_key)
         self.model = model
 
