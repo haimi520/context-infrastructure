@@ -59,18 +59,32 @@ def main():
         data=json.dumps(payload).encode(),
         headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
     )
-    with urllib.request.urlopen(req, timeout=120) as resp:
-        data = json.loads(resp.read())
-
-    images = data.get("images") or []
-    if not images:
-        print(f"No images returned: {data}")
+    try:
+        with urllib.request.urlopen(req, timeout=120) as resp:
+            data = json.loads(resp.read())
+    except urllib.error.HTTPError as e:
+        print(f"HTTP {e.code}: {e.read()[:300]}")
         return 1
 
-    image_url = images[0].get("url")
+    # SiliconFlow: {"images": [{"url": ...}]}；OpenAI/new-api: {"data": [{"url"|"b64_json": ...}]}
+    image_url = None
+    b64 = None
+    images = data.get("images") or data.get("data") or []
+    if images:
+        first = images[0]
+        image_url = first.get("url")
+        b64 = first.get("b64_json")
+    if not image_url and not b64:
+        print(f"No images returned: {json.dumps(data)[:300]}")
+        return 1
+
     out = Path(args.output)
     out.parent.mkdir(parents=True, exist_ok=True)
-    urllib.request.urlretrieve(image_url, out)
+    if b64:
+        import base64
+        out.write_bytes(base64.b64decode(b64))
+    else:
+        urllib.request.urlretrieve(image_url, out)
     print(f"saved: {out}")
     return 0
 
