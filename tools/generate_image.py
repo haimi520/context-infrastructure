@@ -45,9 +45,16 @@ def main():
     args = parser.parse_args()
 
     load_repo_env()
-    api_key = os.getenv("IMAGE_API_KEY") or os.getenv("SEMANTIC_EMBEDDING_API_KEY")
+    base = args.api_base.lower()
+    api_key = os.getenv("IMAGE_API_KEY")
+    if not api_key and "opendoor" in base:
+        api_key = os.getenv("OPENDOOR_API_KEY")
+    if not api_key and "wucur" in base:
+        api_key = os.getenv("WUCUR_API_KEY")
     if not api_key:
-        print("Error: set SEMANTIC_EMBEDDING_API_KEY (or IMAGE_API_KEY) in .env")
+        api_key = os.getenv("SEMANTIC_EMBEDDING_API_KEY")
+    if not api_key:
+        print("Error: set IMAGE_API_KEY / OPENDOOR_API_KEY / WUCUR_API_KEY / SEMANTIC_EMBEDDING_API_KEY in .env")
         return 1
 
     payload = {"model": args.model, "prompt": args.prompt}
