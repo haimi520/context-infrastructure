@@ -18,6 +18,8 @@
         <string>antigravity</string>
         <string>--source</string>
         <string>dsh</string>
+        <string>--source</string>
+        <string>hermes</string>
         <string>--base-dir</string>
         <string>contexts/ai_sessions</string>
         <string>--state-file</string>
