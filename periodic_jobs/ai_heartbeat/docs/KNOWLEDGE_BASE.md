@@ -53,6 +53,7 @@
 - **目标文件**: `contexts/memory/OBSERVATIONS.md`
 - **操作**: 采用 **Append-only** 模式。在文件末尾追加最新的日期 Header，并将当日观测点写入。
 - **日期格式**: 使用 `Date: YYYY-MM-DD`（Date 首字母大写，冒号后空格，ISO 日期）。
+  历史挖掘压缩块可用区间形式 `Date: YYYY-MM-DD ~ YYYY-MM-DD`，条目自身带 `(mined from ...)` 来源。
 - **格式**: 严格遵循上述红黄绿交通灯 Emoji 格式，每条记录单行化。
 
 ### 4.2 反思与晋升 (L2 Reflector)

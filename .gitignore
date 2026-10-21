@@ -13,3 +13,5 @@ __pycache__/
 contexts/ai_sessions/
 adhoc_jobs/share_site/site/
 contexts/memory/.mining_state.json
+contexts/memory/.consolidate/
+contexts/memory/OBSERVATIONS.md.bak
